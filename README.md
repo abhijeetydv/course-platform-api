@@ -64,7 +64,7 @@ Set the following environment variables for production deployment:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/course-platform-api.git
+   git clone https://github.com/abhijeetydv/course-platform-api.git
    cd course-platform-api
    ```
 
@@ -145,7 +145,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👤 Author
 
-Your Name
+Abhijeet Yadav
 
 ---
 

@@ -19,81 +19,78 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CourseService {
 
-    private final CourseRepository courseRepository;
+        private final CourseRepository courseRepository;
 
-    @Transactional(readOnly = true)
-    public CourseListResponse getAllCourses() {
-        log.debug("Fetching all courses");
-        
-        List<Course> courses = courseRepository.findAll();
-        
-        List<CourseSummaryDto> courseSummaries = courses.stream()
-                .map(this::mapToCourseSummary)
-                .collect(Collectors.toList());
+        @Transactional(readOnly = true)
+        public CourseListResponse getAllCourses() {
+                log.debug("Fetching all courses");
 
-        return CourseListResponse.builder()
-                .courses(courseSummaries)
-                .build();
-    }
+                List<Course> courses = courseRepository.findAll();
 
-    @Transactional(readOnly = true)
-    public CourseDetailResponse getCourseById(String courseId) {
-        log.debug("Fetching course with id: {}", courseId);
-        
-        Course course = courseRepository.findByIdWithTopicsAndSubtopics(courseId);
-        
-        if (course == null) {
-            throw new ResourceNotFoundException("Course", "id", courseId);
+                List<CourseSummaryDto> courseSummaries = courses.stream()
+                                .map(this::mapToCourseSummary)
+                                .collect(Collectors.toList());
+
+                return CourseListResponse.builder()
+                                .courses(courseSummaries)
+                                .build();
         }
 
-        return mapToCourseDetail(course);
-    }
+        @Transactional(readOnly = true)
+        public CourseDetailResponse getCourseById(String courseId) {
+                log.debug("Fetching course with id: {}", courseId);
 
-    private CourseSummaryDto mapToCourseSummary(Course course) {
-        int topicCount = course.getTopics().size();
-        int subtopicCount = course.getTopics().stream()
-                .mapToInt(topic -> topic.getSubtopics().size())
-                .sum();
+                Course course = courseRepository.findByIdWithTopicsAndSubtopics(courseId)
+                                .orElseThrow(() -> new ResourceNotFoundException("Course", "id", courseId));
 
-        return CourseSummaryDto.builder()
-                .id(course.getId())
-                .title(course.getTitle())
-                .description(course.getDescription())
-                .topicCount(topicCount)
-                .subtopicCount(subtopicCount)
-                .build();
-    }
+                return mapToCourseDetail(course);
+        }
 
-    private CourseDetailResponse mapToCourseDetail(Course course) {
-        List<TopicDto> topicDtos = course.getTopics().stream()
-                .map(this::mapToTopicDto)
-                .collect(Collectors.toList());
+        private CourseSummaryDto mapToCourseSummary(Course course) {
+                int topicCount = course.getTopics().size();
+                int subtopicCount = course.getTopics().stream()
+                                .mapToInt(topic -> topic.getSubtopics().size())
+                                .sum();
 
-        return CourseDetailResponse.builder()
-                .id(course.getId())
-                .title(course.getTitle())
-                .description(course.getDescription())
-                .topics(topicDtos)
-                .build();
-    }
+                return CourseSummaryDto.builder()
+                                .id(course.getId())
+                                .title(course.getTitle())
+                                .description(course.getDescription())
+                                .topicCount(topicCount)
+                                .subtopicCount(subtopicCount)
+                                .build();
+        }
 
-    private TopicDto mapToTopicDto(Topic topic) {
-        List<SubtopicDto> subtopicDtos = topic.getSubtopics().stream()
-                .map(this::mapToSubtopicDto)
-                .collect(Collectors.toList());
+        private CourseDetailResponse mapToCourseDetail(Course course) {
+                List<TopicDto> topicDtos = course.getTopics().stream()
+                                .map(this::mapToTopicDto)
+                                .collect(Collectors.toList());
 
-        return TopicDto.builder()
-                .id(topic.getId())
-                .title(topic.getTitle())
-                .subtopics(subtopicDtos)
-                .build();
-    }
+                return CourseDetailResponse.builder()
+                                .id(course.getId())
+                                .title(course.getTitle())
+                                .description(course.getDescription())
+                                .topics(topicDtos)
+                                .build();
+        }
 
-    private SubtopicDto mapToSubtopicDto(Subtopic subtopic) {
-        return SubtopicDto.builder()
-                .id(subtopic.getId())
-                .title(subtopic.getTitle())
-                .content(subtopic.getContent())
-                .build();
-    }
+        private TopicDto mapToTopicDto(Topic topic) {
+                List<SubtopicDto> subtopicDtos = topic.getSubtopics().stream()
+                                .map(this::mapToSubtopicDto)
+                                .collect(Collectors.toList());
+
+                return TopicDto.builder()
+                                .id(topic.getId())
+                                .title(topic.getTitle())
+                                .subtopics(subtopicDtos)
+                                .build();
+        }
+
+        private SubtopicDto mapToSubtopicDto(Subtopic subtopic) {
+                return SubtopicDto.builder()
+                                .id(subtopic.getId())
+                                .title(subtopic.getTitle())
+                                .content(subtopic.getContent())
+                                .build();
+        }
 }

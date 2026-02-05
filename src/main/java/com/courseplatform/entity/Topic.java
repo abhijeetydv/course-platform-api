@@ -3,8 +3,8 @@ package com.courseplatform.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "topics")
@@ -33,7 +33,7 @@ public class Topic {
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderIndex ASC")
     @Builder.Default
-    private List<Subtopic> subtopics = new ArrayList<>();
+    private Set<Subtopic> subtopics = new HashSet<>();
 
     /**
      * Helper method to add a subtopic and maintain bidirectional relationship

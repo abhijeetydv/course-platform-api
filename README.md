@@ -19,7 +19,7 @@ A RESTful API for a Learning Management System built with **Spring Boot 3.2.2**.
 | Spring Boot | 3.2.2 | Backend Framework |
 | Spring Security | 6.x | Authentication & Authorization |
 | Spring Data JPA | 3.x | Data Persistence |
-| PostgreSQL | - | Database |
+| PostgreSQL | 18 | Database |
 | JWT (jjwt) | 0.12.5 | Token-based Authentication |
 | SpringDoc OpenAPI | 2.3.0 | API Documentation |
 | Lombok | 1.18.34 | Boilerplate Reduction |
@@ -64,7 +64,7 @@ Set the following environment variables for production deployment:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/course-platform-api.git
+   git clone https://github.com/abhijeetydv/course-platform-api.git
    cd course-platform-api
    ```
 
@@ -145,7 +145,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👤 Author
 
-Your Name
+Abhijeet Yadav
 
 ---
 
